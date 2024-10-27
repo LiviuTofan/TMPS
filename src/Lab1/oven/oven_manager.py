@@ -1,5 +1,5 @@
 class OvenManager:
-    _instance = None  # Store the single instance of OvenManager
+    _instance = None
 
     def __new__(cls):
         if cls._instance is None:

@@ -1,6 +1,5 @@
 from pizza.pizza_base import Pizza
 
-
 class CouponDecorator(Pizza):
     def __init__(self, pizza, discount=5.00):
         self.pizza = pizza

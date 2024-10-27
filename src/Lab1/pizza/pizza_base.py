@@ -11,13 +11,14 @@ class Pizza(ABC):
     @abstractmethod
     def calculate_price(self):
         pass
-    
+
     def prepare(self):
         print(f"Preparing {self.size.capitalize()} {self.name} pizza with ingredients:", ', '.join(self.ingredients))
 
     def clone(self):
         cloned_pizza = copy.deepcopy(self)
         cloned_pizza.price = cloned_pizza.calculate_price()
+        cloned_pizza.ingredients = self.ingredients[:]
         return cloned_pizza
     
     def __str__(self):

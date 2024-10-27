@@ -1,9 +1,7 @@
-
-# Main file to demonstrate usage of the Singleton, Factory Method, Prototype and Decorator patterns
-
 from oven.oven_manager import OvenManager
 from factory.Factory import PizzaFactory
 from factory.Coupon import CouponDecorator
+from factory.PizzaType import PizzaType
 
 oven = OvenManager()
 oven.set_temperature(250)
@@ -11,7 +9,7 @@ oven.set_temperature(250)
 factory = PizzaFactory()
 
 # Create a large Margherita pizza
-margherita_large = factory.create_pizza("Margherita", size="large")
+margherita_large = factory.create_pizza(PizzaType.MARGHERITA, size="large")
 margherita_large.prepare()
 oven.start_baking(margherita_large.name)
 print(margherita_large, "is ready to serve!")
@@ -29,19 +27,19 @@ print()
 # Clone the large Margherita pizza and modify the clone by adding an ingredient and changing the size using the Prototype pattern
 cloned_margherita = margherita_large.clone()
 cloned_margherita.ingredients.append("Olives")
-cloned_margherita.size = "medium"
-print(cloned_margherita)  # Now reflects the new size and ingredients
-print(margherita_large)   # Original pizza remains unchanged
+cloned_margherita.size = "large"
+print(cloned_margherita)
+print(margherita_large) 
 print()
 
-pepperoni_small = factory.create_pizza("Pepperoni", size="small")
+pepperoni_small = factory.create_pizza(PizzaType.PEPPERONI, size="small")
 pepperoni_small.prepare()
 oven.start_baking(pepperoni_small.name)
 print(pepperoni_small)
 oven.stop_baking()
 oven.take_your_pizza()
 
-veggie_medium = factory.create_pizza("Veggie", size="medium")
+veggie_medium = factory.create_pizza(PizzaType.VEGGIE, size="medium")
 veggie_medium.prepare()
 oven.start_baking(veggie_medium.name)
 print(veggie_medium)
