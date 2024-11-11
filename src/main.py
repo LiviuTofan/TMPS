@@ -1,63 +1,72 @@
-from Lab1.oven.oven_manager import OvenManager
-from Lab1.factory.Factory import PizzaFactory
-from Lab1.factory.Coupon import CouponDecorator
+from Lab2.facade.order_facade import OrderFacade
 from Lab1.factory.PizzaType import PizzaType
+from Lab2.composite.ingredient_group import IngredientGroup
+from Lab2.composite.available_ingredients import tomato, cheese, olives, mushrooms, pepperoni
+from Lab2.proxy.oven_proxy import OvenProxy
 
-# Adapter pattern imports
-from Lab2.domain.payment_interface import PaymentProcessor
+# Initialize the facade for pizza ordering and the oven proxy
+order_facade = OrderFacade()
+oven_proxy = OvenProxy()
+oven_proxy.set_temperature(250)
+
+# Order a large Margherita pizza with a $5 coupon
+print("Ordering a large Margherita pizza with a $5 coupon:")
+pizza, final_price = order_facade.order_pizza(PizzaType.MARGHERITA, size="large", discount=5.00)
+oven_proxy.start_baking(pizza.name)
+print(f"{pizza} is ready! Final price after discount: ${final_price:.2f}")
+oven_proxy.stop_baking()
+oven_proxy.take_your_pizza()
+print()
+
+# Clone the Margherita pizza and modify the clone
+print("Cloning and modifying the Margherita pizza by adding olives:")
+cloned_margherita = pizza.clone()
+cloned_margherita.ingredients.append("Olives")
+print(f"Cloned pizza: {cloned_margherita}\nOriginal pizza: {pizza}\n")
+
+# Order a small Pepperoni pizza without a discount
+print("Ordering a small Pepperoni pizza without a discount:")
+pepperoni_pizza, pepperoni_price = order_facade.order_pizza(PizzaType.PEPPERONI, size="small")
+oven_proxy.start_baking(pepperoni_pizza.name)
+print(f"{pepperoni_pizza} is ready! Final price: ${pepperoni_price:.2f}")
+oven_proxy.stop_baking()
+oven_proxy.take_your_pizza()
+print()
+
+# Lock the oven and attempt to bake another pizza to demonstrate proxy control
+oven_proxy.lock_oven()
+print("Trying to bake with the oven locked:")
+veggie_pizza, veggie_price = order_facade.order_pizza(PizzaType.VEGGIE, size="medium")
+oven_proxy.start_baking(veggie_pizza.name)
+oven_proxy.unlock_oven()
+
+# Order a medium Veggie pizza with grouped ingredients
+print("Ordering a medium Veggie pizza with grouped ingredients (Veggie Toppings):")
+veggie_toppings = IngredientGroup("Veggie Toppings")
+veggie_toppings.add(tomato)
+veggie_toppings.add(cheese)
+veggie_toppings.add(olives)
+veggie_toppings.add(mushrooms)
+
+veggie_pizza, veggie_price = order_facade.order_pizza(PizzaType.VEGGIE, size="medium")
+oven_proxy.start_baking(veggie_pizza.name)
+print(f"{veggie_pizza} is ready! Final price: ${veggie_price:.2f}")
+print("Included Ingredients:", veggie_toppings)
+oven_proxy.stop_baking()
+oven_proxy.take_your_pizza()
+print()
+
+# Payment using the Adapter pattern
+print("Processing payment for the Margherita pizza in EUR using Adapter pattern:")
 from Lab2.domain.extern_payment_service import ExternalPaymentService
 from Lab2.adapters.payment_adapter import PaymentAdapter
 
-# Existing code for oven and factory setup
-oven = OvenManager()
-oven.set_temperature(250)
-
-factory = PizzaFactory()
-
-# Create a large Margherita pizza
-margherita_large = factory.create_pizza(PizzaType.MARGHERITA, size="large")
-margherita_large.prepare()
-oven.start_baking(margherita_large.name)
-print(margherita_large, "is ready to serve!")
-oven.stop_baking()
-oven.take_your_pizza()
-
-# Use the 5$ coupon on the large Margherita pizza, by implementing the Decorator pattern
-coupon_discount = 5.00
-margherita_with_coupon = CouponDecorator(margherita_large, discount=coupon_discount)
-print(margherita_with_coupon)
-final_price = margherita_with_coupon.calculate_price()
-print(f"Final price after coupon: ${final_price:.2f}") 
-print()
-
-# Clone the large Margherita pizza and modify the clone by adding an ingredient and changing the size using the Prototype pattern
-cloned_margherita = margherita_large.clone()
-cloned_margherita.ingredients.append("Olives")
-cloned_margherita.size = "large"
-print(cloned_margherita)
-print(margherita_large) 
-print()
-
-pepperoni_small = factory.create_pizza(PizzaType.PEPPERONI, size="small")
-pepperoni_small.prepare()
-oven.start_baking(pepperoni_small.name)
-print(pepperoni_small)
-oven.stop_baking()
-oven.take_your_pizza()
-
-veggie_medium = factory.create_pizza(PizzaType.VEGGIE, size="medium")
-veggie_medium.prepare()
-oven.start_baking(veggie_medium.name)
-print(veggie_medium)
-oven.stop_baking()
-oven.take_your_pizza()
-
-# Structural Pattern: Adapter
-# Integrate an external payment system using the Adapter pattern
+conversion_rate_usd_to_eur = 0.90
 external_service = ExternalPaymentService()
-payment_adapter = PaymentAdapter(external_service)
+payment_adapter = PaymentAdapter(external_service, conversion_rate=1 / conversion_rate_usd_to_eur)
+payment_adapter.process_payment(final_price * conversion_rate_usd_to_eur, currency="EUR")
 
-# Simulate payment for a pizza order
-print("\nProcessing payment through adapted service...")
-pizza_price = margherita_with_coupon.calculate_price()
-payment_adapter.process_payment(pizza_price)
+# Total pizzas baked using the proxy
+print("-" * 30)
+print(f"Total pizzas baked: {oven_proxy.get_baking_count()}")
+print("-" * 30)

@@ -1,4 +1,4 @@
-from pizza.pizza_base import Pizza
+from Lab1.pizza.pizza_base import Pizza
 
 class VeggiePizza(Pizza):
     def __init__(self, size="medium"):
