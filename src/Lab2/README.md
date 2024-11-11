@@ -127,7 +127,7 @@ class OvenProxy:
 In this laboratory work, I implemented the **Facade**, **Adapter**, **Composite**, and **Proxy** patterns to create a robust pizza ordering system. Each pattern contributed to making the codebase more modular, easier to maintain, and more aligned with real-world complexities. By applying these structural patterns, I learned how they enhance the flexibility and scalability of software projects. Now, since my project has better structure and logic it can be sold to Andy's Pizza :) .
 
 <p align="center">
-  <img src="/home/liviu/Univer/III year/TMPS/src/Lab2/image2.jpg" alt="Program Output"><br>
+  <img src="image2.jpg" alt="Program Output"><br>
   <strong>Figure 1. Program Output</strong>
 </p>
 This output illustrates a part of the practical implementation of the Structural Patterns.
