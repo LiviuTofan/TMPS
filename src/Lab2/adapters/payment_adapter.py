@@ -4,7 +4,7 @@ from Lab2.domain.extern_payment_service import ExternalPaymentService
 class PaymentAdapter(PaymentProcessor):
     def __init__(self, external_service, conversion_rate=1.0):
         self.external_service = external_service
-        self.conversion_rate = conversion_rate  # Default rate is 1.0 (no conversion)
+        self.conversion_rate = conversion_rate
 
     def convert_to_dollars(self, amount_in_euros):
         if amount_in_euros <= 0:
