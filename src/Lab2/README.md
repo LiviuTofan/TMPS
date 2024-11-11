@@ -162,4 +162,3 @@ Structural design patterns play a crucial role in creating well-organized, maint
 - [Refactoring Guru: Structural Design Patterns](https://refactoring.guru/design-patterns/structural)
 - [GeeksforGeeks: Design Patterns in Python](https://www.geeksforgeeks.org/design-patterns-python/)
 - [Python Patterns: A Guide to Implementing Design Patterns in Python](https://python-patterns.guide/)
-```
