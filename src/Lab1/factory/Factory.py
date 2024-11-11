@@ -1,7 +1,7 @@
-from pizza.Margherita import MargheritaPizza
-from pizza.Pepperoni import PepperoniPizza
-from pizza.Veggie import VeggiePizza
-from factory.PizzaType import PizzaType
+from Lab1.pizza.Margherita import MargheritaPizza
+from Lab1.pizza.Pepperoni import PepperoniPizza
+from Lab1.pizza.Veggie import VeggiePizza
+from Lab1.factory.PizzaType import PizzaType
 
 class PizzaFactory:
     @staticmethod

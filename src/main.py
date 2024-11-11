@@ -1,8 +1,14 @@
-from oven.oven_manager import OvenManager
-from factory.Factory import PizzaFactory
-from factory.Coupon import CouponDecorator
-from factory.PizzaType import PizzaType
+from Lab1.oven.oven_manager import OvenManager
+from Lab1.factory.Factory import PizzaFactory
+from Lab1.factory.Coupon import CouponDecorator
+from Lab1.factory.PizzaType import PizzaType
 
+# Adapter pattern imports
+from Lab2.domain.payment_interface import PaymentProcessor
+from Lab2.domain.extern_payment_service import ExternalPaymentService
+from Lab2.adapters.payment_adapter import PaymentAdapter
+
+# Existing code for oven and factory setup
 oven = OvenManager()
 oven.set_temperature(250)
 
@@ -45,3 +51,13 @@ oven.start_baking(veggie_medium.name)
 print(veggie_medium)
 oven.stop_baking()
 oven.take_your_pizza()
+
+# Structural Pattern: Adapter
+# Integrate an external payment system using the Adapter pattern
+external_service = ExternalPaymentService()
+payment_adapter = PaymentAdapter(external_service)
+
+# Simulate payment for a pizza order
+print("\nProcessing payment through adapted service...")
+pizza_price = margherita_with_coupon.calculate_price()
+payment_adapter.process_payment(pizza_price)
