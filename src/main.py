@@ -64,6 +64,7 @@ from Lab2.adapters.payment_adapter import PaymentAdapter
 conversion_rate_usd_to_eur = 0.90
 external_service = ExternalPaymentService()
 payment_adapter = PaymentAdapter(external_service, conversion_rate=1 / conversion_rate_usd_to_eur)
+print("FInal Price:", final_price)
 payment_adapter.process_payment(final_price * conversion_rate_usd_to_eur, currency="EUR")
 
 # Total pizzas baked using the proxy
